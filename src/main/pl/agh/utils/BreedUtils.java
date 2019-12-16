@@ -1,4 +1,4 @@
-package pl.agh.breedUtils;
+package pl.agh.utils;
 
 import javafx.util.Pair;
 import pl.agh.animal.Animal;
@@ -13,6 +13,7 @@ import java.util.Comparator;
 import java.util.HashSet;
 
 public class BreedUtils {
+    public static int minBreedEnergy;
     public static ArrayList<Animal> getAnimalsForBreeding(Vector2d pos, WorldMap map) throws IllegalArgumentException{
 
         if(map.getElements().containsKey(pos)){
@@ -28,9 +29,11 @@ public class BreedUtils {
         }
         throw new IllegalArgumentException("pozycja jest pusta!");
     }
-    public static boolean isBreedingPossible(Vector2d key,WorldMap map, int minBreedEnergy){
+    public static boolean isBreedingPossible(Vector2d key,WorldMap map){
         //sprawdzanie energii animalów
-        if(map.getElements().get(key).size()<=1)return false;
+        HashSet elements = map.getElements().get(key);
+        if(elements == null) return false;
+        if(elements.size()<=1)return false;
         ArrayList<Animal> breedPair;
         try{
             breedPair = getAnimalsForBreeding(key,map);
@@ -42,6 +45,4 @@ public class BreedUtils {
         return true;
     }
 
-    public static Vector2d getNearbyPosition(WorldMap map, Vector2d position) {
-    }
 }

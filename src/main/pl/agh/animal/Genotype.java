@@ -29,7 +29,6 @@ import java.util.*;
     private ArrayList<Integer> createNewGenes(ArrayList<Integer>genes1, ArrayList<Integer> genes2){
         HashSet<Integer> genesSet = new HashSet<>();
         Random random = new Random();
-       int rand = random.nextInt();
         int index1;
         int index2;
         do{
@@ -38,9 +37,9 @@ import java.util.*;
         int lower = Math.min(index1,index2);
         int higher = lower == index1 ? index2 : index1;
         ArrayList<Integer> ret = new ArrayList<>();
-        ret.addAll(genes1.subList(0,lower - 1));
-        ret.addAll(genes2.subList(lower,higher-1));
-        ret.addAll(genes1.subList(higher,GENESSIZE-1));
+        ret.addAll(genes1.subList(0,lower));
+        ret.addAll(genes2.subList(lower,higher));
+        ret.addAll(genes1.subList(higher,GENESSIZE));
         genesSet.addAll(ret);
         if(!genesSet.containsAll(Arrays.asList(baseGenes))){
             return repairGenes(ret);
@@ -78,5 +77,23 @@ import java.util.*;
     public Object clone(){
         return new Genotype((ArrayList<Integer>) genes.clone());
     }
+    @Override
+    public boolean equals(Object other){
+        if(!(other instanceof Genotype)) return false;
+        Genotype genotype = (Genotype) other;
+        for(int i = 0; i < GENESSIZE; i++){
+            if(genotype.getGenes().get(i)!=genes.get(i))return false;
 
+        }
+        return true;
+    }
+    @Override
+    public int hashCode(){
+        int prime = 7;
+        int sum = genes.stream().mapToInt(Object::hashCode).sum();
+        return  prime * sum;
+    }
+    public void setGenes(ArrayList<Integer> genes){
+        this.genes = genes;
+    }
 }

@@ -1,10 +1,7 @@
 package pl.agh.animalMap;
 import org.junit.Assert;
-import org.junit.Assert.*;
-import org.junit.Before;
 import org.junit.Test;
-import pl.agh.animalMap.WorldMap;
-import pl.agh.movementUtils.Direction;
+import pl.agh.utils.MovementUtils;
 import pl.agh.movementUtils.Vector2d;
 public class AnimalMapTest {
     Vector2d steppeStart = new Vector2d(0,0);
@@ -23,9 +20,9 @@ public class AnimalMapTest {
 
     @Test
     public void getCorrectPosTest(){
-        Assert.assertEquals(map.getCorrectPos(vec1),test1);
-        Assert.assertEquals(map.getCorrectPos(vec2),test2);
-        Assert.assertEquals(map.getCorrectPos(vec3),test3);
-        Assert.assertEquals(map.getCorrectPos(vec4),test4);
+        Assert.assertEquals(MovementUtils.getCorrectPos(vec1,map),test1);
+        Assert.assertEquals(MovementUtils.getCorrectPos(vec2,map),test2);
+        Assert.assertEquals(MovementUtils.getCorrectPos(vec3,map),test3);
+        Assert.assertEquals(MovementUtils.getCorrectPos(vec4,map),test4);
     }
 }

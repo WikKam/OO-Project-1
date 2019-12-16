@@ -10,6 +10,7 @@ import pl.agh.movementUtils.Vector2d;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Random;
 
 public class GenotypeTest {
     ArrayList<Integer> genes = new ArrayList<>();
@@ -31,6 +32,22 @@ public class GenotypeTest {
         testSet.clear();
         testSet.addAll(test3.getGenes());
         Assert.assertTrue(testSet.containsAll(Arrays.asList(baseGenes)));
+    }
+    @Test
+    public void equalsTest(){
+        ArrayList<Integer> g1 = new ArrayList<>();
+        ArrayList<Integer> g2 = new ArrayList<>();
+        Genotype gt1 = new Genotype();
+        Genotype gt2 = new Genotype();
+        Random random = new Random();
+        for(int i = 0;i<32;i++){
+            int gene = random.nextInt(8);
+            g1.add(gene);
+            g2.add(gene);
+        }
+        gt1.setGenes(g1);
+        gt2.setGenes(g2);
+        Assert.assertEquals(gt1,gt2);
     }
 
 }

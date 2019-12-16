@@ -1,5 +1,7 @@
 package pl.agh.movementUtils;
 
+import java.util.Random;
+
 public class Vector2d {
     public final int x;
     public final int y;

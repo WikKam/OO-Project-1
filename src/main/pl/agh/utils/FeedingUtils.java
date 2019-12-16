@@ -1,4 +1,4 @@
-package pl.agh.feedingUtils;
+package pl.agh.utils;
 
 import pl.agh.animal.Animal;
 import pl.agh.animalMap.WorldMap;
@@ -11,8 +11,9 @@ import java.util.Collections;
 import java.util.HashSet;
 
 public class FeedingUtils{
+    public static int energyGainedFromGrass;
     public static boolean canAnimalsFeed(Vector2d key, WorldMap map){
-        Grass test = new Grass(key);
+        Grass test = new Grass(key,map);
         HashSet<MapElement> elements = map.getElements().get(key);
         if(elements.contains(test)){
             if(elements.size()>1)return true;

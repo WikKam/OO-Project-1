@@ -18,6 +18,7 @@ public class AnimalMoveTest {
     Vector2d expected2 = new Vector2d(0,1);
     @Test
     public void moveTest(){
+        map.place(animal);
         animal.move(0);
         animal.move(0);
         Assert.assertEquals(animal.getPosition(),expected1);
