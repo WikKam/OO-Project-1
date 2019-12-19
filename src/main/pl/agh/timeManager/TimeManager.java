@@ -19,18 +19,18 @@ public class TimeManager extends Thread {
     private int daysPassed = 0;
     private MapVisualiser visualiser;
     private boolean isSimulationPaused = false;
+    private Animal praParent = null;
     public TimeManager(WorldMap map){
 
         this.map = map;
         this.visualiser = new MapVisualiser(map,this);
-        visualiser.show();
     }
     private void removeDeadAnimals(){
         ArrayList<Animal> toRemove = new ArrayList<>();
         ArrayList<Animal> animals = map.getAnimals();
         animals.forEach(animal -> {
             if(animal.isDead()){
-                animal.isDead();
+                animal.die();
                 toRemove.add(animal);
                 map.getElements().get(animal.getPosition()).remove(animal);
             }
@@ -62,7 +62,11 @@ public class TimeManager extends Thread {
                 ArrayList<Animal>breeding = BreedUtils.getAnimalsForBreeding(key,map);
                 Animal parent1 = breeding.get(0);
                 Animal parent2 = breeding.get(1);
-                Animal animal = new Animal(parent1,parent2);
+                Animal praParent = null;
+                if(this.praParent != null &&(parent1.equals(this.praParent) || parent2.equals(this.praParent) ||
+                this.praParent.equals(parent1) || this.praParent.equals(parent2)))
+                    praParent = this.praParent;
+                Animal animal = new Animal(parent1,parent2, praParent);
                 babies.add(animal);
                 parent1.looseEnergy(parent1.getCurrentEnergy()/4);
                 parent2.looseEnergy(parent2.getCurrentEnergy()/4);
@@ -99,7 +103,7 @@ public class TimeManager extends Thread {
         growingPhase();
         map.stats.updateAll(map);
         visualiser.update();
-        Thread.sleep(200);
+        Thread.sleep(50);
     }
     public int getDaysPassed(){
         return this.daysPassed;
@@ -126,6 +130,11 @@ public class TimeManager extends Thread {
             }
         }
     }
+    @Override
+    public void start(){
+        visualiser.show();
+        super.start();
+    }
     public synchronized void unpause(){
 
         this.isSimulationPaused = false;
@@ -138,5 +147,8 @@ public class TimeManager extends Thread {
     }
     public boolean getSimulationState(){
         return this.isSimulationPaused;
+    }
+    public void setPraParent(Animal praParent){
+        this.praParent = praParent;
     }
 }

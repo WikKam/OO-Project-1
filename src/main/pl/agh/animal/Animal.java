@@ -23,6 +23,7 @@ public class Animal implements MapElement {
     private PropertyChangeSupport support;
     private int lifespan=0;
     private int childrenNo = 0;
+    private Animal praParent = null;
     public void addPropertyChangeListener(PropertyChangeListener ls){
         support.addPropertyChangeListener(ls);
     }
@@ -50,6 +51,10 @@ public class Animal implements MapElement {
         parent1.addChild();
         parent2.addChild();
        // this.map.place(this);
+    }
+    public Animal(Animal parent1, Animal parent2, Animal praParent){
+        this(parent1,parent2);
+        this.praParent = praParent;
     }
     public void move(int deg){
         deg = deg >0?deg : 360 + deg;
@@ -88,17 +93,18 @@ public class Animal implements MapElement {
         Animal a2 = (Animal)o;
         return this.getCurrentEnergy() - a2.getCurrentEnergy();
     }
+    /*****zmienic to**///
     public boolean isDead(){
-        if(this.currentEnergy<=0){
-            PropertyChangeEvent ret = new PropertyChangeEvent(this,"death",this.position,null);
-            this.support.firePropertyChange(ret);
-            return true;
-        }
-        return false;
+        return this.currentEnergy <= 0;
+    }
+    ///***///
+    public void die(){
+        PropertyChangeEvent ret = new PropertyChangeEvent(this,"death",this.position,null);
+        this.support.firePropertyChange(ret);
     }
     public void gainEnergy(int gain){
         this.currentEnergy+=gain;
-        if(this.currentEnergy>100)this.currentEnergy = 100;
+        if(this.currentEnergy>100)this.currentEnergy = startEnergy;
     }
     public void looseEnergy(int lost){
         this.currentEnergy -= lost;
@@ -111,5 +117,12 @@ public class Animal implements MapElement {
     }
     public void addChild(){
         this.childrenNo++;
+    }
+    public Animal getPraParent(){
+        return this.praParent;
+    }
+
+    public void setChildrenNo(int i) {
+        this.childrenNo = i;
     }
 }

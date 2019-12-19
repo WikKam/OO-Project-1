@@ -6,6 +6,7 @@ import pl.agh.movementUtils.Vector2d;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -19,7 +20,9 @@ public class WorldMap implements PropertyChangeListener {
     /***************wszystkie pozycje********/
     private ArrayList<Vector2d> positions;
     private ArrayList<Animal> animals = new ArrayList<>();
-    public MapStatisticts stats = new MapStatisticts();
+    private BigInteger deadAnimalTotalLifespan = new BigInteger("0");
+    private BigInteger deadAnimalNo = new BigInteger("0");
+    public MapStatistics stats = new MapStatistics();
     private int grassNo = 0;
     private HashMap<Vector2d, HashSet<MapElement>> elements = new HashMap<>();
     public WorldMap(Vector2d jungleStart, Vector2d jungleEnd, Vector2d steppeStart, Vector2d steppeEnd){
@@ -37,9 +40,8 @@ public class WorldMap implements PropertyChangeListener {
         MapElement a = (MapElement) e.getSource();
         Vector2d newPos = (Vector2d)e.getNewValue();
         Vector2d oldPos = (Vector2d)e.getOldValue();
-        if(e.getPropertyName() =="move"){
+        if(e.getPropertyName().equals("move")){
             elements.get(oldPos).remove(a);
-        //tutaj cos moze sie wywalic kiedys xdd
         if(elements.containsKey(newPos)){
             elements.get(newPos).add(a);
         }
@@ -49,7 +51,11 @@ public class WorldMap implements PropertyChangeListener {
         }}
         else if(e.getPropertyName().equals("death")){
             elements.get(oldPos).remove(a);
+            Animal animal = (Animal) a;
+
             //animals.remove(a);
+            this.deadAnimalTotalLifespan =this.deadAnimalTotalLifespan.add(new BigInteger(String.valueOf(animal.getLifespan())));
+            this.deadAnimalNo = this.deadAnimalNo.add(new BigInteger("1"));
         }
     }
     public void place(MapElement element){
@@ -90,20 +96,13 @@ public class WorldMap implements PropertyChangeListener {
     public ArrayList<Vector2d> getPositions() {
         return positions;
     }
-    public boolean containsAtPos(Vector2d position, Class a){
-        HashSet<MapElement> elementsAtPos = elements.get(position);
-        if(elementsAtPos == null)return false;
-        for(MapElement el : elementsAtPos){
-            if(a.isInstance(el))return true;
-        }
-        return false;
-    }
     public int getGrassNo(){
         return this.grassNo;
     }
-    public Animal getFirstAnimalFromPos(Vector2d pos){
-        if(!containsAtPos(pos,Animal.class))return null;
-        Animal ret = (Animal) Collections.max(elements.get(pos));
-        return ret;
+    public BigInteger getDeadAnimalTotalLifespan(){
+        return this.deadAnimalTotalLifespan;
+    }
+    public BigInteger getDeadAnimalNo(){
+        return this.deadAnimalNo;
     }
 }

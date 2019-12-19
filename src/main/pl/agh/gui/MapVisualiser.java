@@ -5,6 +5,7 @@ import pl.agh.animalMap.WorldMap;
 import pl.agh.mapElement.Grass;
 import pl.agh.movementUtils.Vector2d;
 import pl.agh.timeManager.TimeManager;
+import pl.agh.utils.MapUtils;
 import pl.agh.utils.MovementUtils;
 
 import javax.swing.*;
@@ -16,6 +17,7 @@ public class MapVisualiser {
     private JFrame frame = new JFrame();
     private JPanel mapVisualisation = new JPanel();
     private StatPanel statPanel;
+    private JPanel buttonPanel = new JPanel();
     private WorldMap map;
     private ArrayList<SquarePanel> fields = new ArrayList<>();
     private TimeManager manager;
@@ -28,9 +30,16 @@ public class MapVisualiser {
             mapVisualisation.add(field);
             fields.add(field);
         });
-        frame.add(mapVisualisation,BorderLayout.WEST);
+        buttonPanel.setLayout(new FlowLayout());
+        buttonPanel.add(new PauseButton(manager,this));
+        buttonPanel.add(new WriteStatsButton(map.stats));
+        frame.add(mapVisualisation,BorderLayout.CENTER);
         frame.add(statPanel,BorderLayout.EAST);
-        frame.add(new PauseButton(manager,this));
+        frame.add(buttonPanel,BorderLayout.SOUTH);
+        //frame.add(new PauseButton(manager,this),BorderLayout.SOUTH);
+        /******/
+        //frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        /******/
     }
 
     private Color getAnimalColor(Vector2d position) {
@@ -46,7 +55,7 @@ public class MapVisualiser {
     public MapVisualiser(WorldMap map,TimeManager manager){
         this.map = map;
         this.manager = manager;
-        this.statPanel = new StatPanel(map.stats);
+        this.statPanel = new StatPanel(map.stats,this);
         init();
     }
     public void update(){
@@ -60,8 +69,9 @@ public class MapVisualiser {
     private void setColor(SquarePanel field){
         if(MovementUtils.isVectorInJungle(field.position,map))field.setBackground(new Color(144,238,144));
         else field.setBackground(new Color(103,83,74));
-        if(map.containsAtPos(field.position, Grass.class))field.setBackground(Color.green);
-        if(map.containsAtPos(field.position, Animal.class))field.setBackground(getAnimalColor(field.position));
+        if(MapUtils.containsAtPos(field.position, Grass.class,map ))field.setBackground(Color.green);
+        if(MapUtils.containsAtPos(field.position, Animal.class,map ))field.setBackground(getAnimalColor(field.position));
+        highlightPickedAnimal(field);
     }
     public ArrayList<SquarePanel> getFields(){
         return this.fields;
@@ -73,7 +83,7 @@ public class MapVisualiser {
 
     public void activateFields() {
         fields.forEach(field -> {
-            if(map.containsAtPos(field.position,Animal.class))field.setEnabled(true);
+            if(MapUtils.containsAtPos(field.position,Animal.class,map ))field.setEnabled(true);
         });
     }
     public WorldMap getMap(){
@@ -84,11 +94,32 @@ public class MapVisualiser {
     }
     public void highlightAnimalsWithDominatingGene(){
         fields.forEach(field -> {
-            Animal current = map.getFirstAnimalFromPos(field.position);
+            Animal current = MapUtils.getFirstAnimalFromPos(field.position,map);
             if(current != null&&current.getGenotype().equals(statPanel.getStats().getDominatingGene()))field.setBorder(BorderFactory.createLineBorder(Color.yellow, 3));//field.setBackground(Color.yellow);
         });
     }
     public void clearHighlight(){
         fields.forEach(field -> field.setBorder(null));
+    }
+    public JFrame getFrame(){
+        return this.frame;
+    }
+    public JPanel getButtonPanel(){
+        return this.buttonPanel;
+    }
+    public TimeManager getManager(){
+        return this.manager;
+    }
+    public void highlightPickedAnimal(SquarePanel field){
+        Animal picked = statPanel.getPickedAnimal();
+        if(picked == null)return;
+       if(field.position.equals(picked.getPosition())){
+           field.setIsAnimalPicked(true);
+           field.setBorder(BorderFactory.createLineBorder(Color.white,3));
+       }
+       else {
+           field.setIsAnimalPicked(false);
+           field.setBorder(null);
+       }
     }
 }
