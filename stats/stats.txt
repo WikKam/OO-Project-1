@@ -1,0 +1,6 @@
+ilosc animal: 3
+srednia ilosc dzieci: 0
+srednia ilosc energii: 51
+sredni wiek: 0
+ilosc trawy: 36
+dominujący gen: pl.agh.animal.Genotype@341
