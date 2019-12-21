@@ -28,6 +28,7 @@ public class StatPanel extends JPanel {
     private ArrayList<JTextArea> container = new ArrayList<>();
     public StatPanel(MapStatistics stats, MapVisualiser visualiser){
         super();
+        container.add(currentDay);
         container.add(animalNo);
         container.add(childrenNo);
         container.add(avgEnergy);
