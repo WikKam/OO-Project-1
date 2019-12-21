@@ -22,6 +22,7 @@ public class MapVisualiser {
     private ArrayList<SquarePanel> fields = new ArrayList<>();
     private TimeManager manager;
     private void init(){
+        frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         GridLayout layout = new GridLayout(map.steppeEnd.x-map.steppeStart.x+1,map.steppeEnd.y-map.steppeStart.y+1,2,2);
         mapVisualisation.setLayout(layout);
         map.getPositions().forEach(position -> {
@@ -101,7 +102,7 @@ public class MapVisualiser {
         return this.manager;
     }
     void highlightIfContainsPickedAnimal(SquarePanel field){
-        Animal picked = statPanel.getPickedAnimal();
+        Animal picked = statPanel.getStats().getPickedAnimal();
         if(picked == null || !field.position.equals(picked.getPosition())){
             field.setIsAnimalPicked(false);
             field.setBorder(null);

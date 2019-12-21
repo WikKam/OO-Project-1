@@ -33,17 +33,17 @@ public class SquarePanel extends JButton implements ActionListener {
             Animal pickedAnimal = (Animal) Collections.max(visualiser.getMap().getElements().get(position));
             pickedAnimal.setChildrenNo(0);
             pickedAnimal.setDescendantNo(0);
+            this.visualiser.getStatPanel().getStats().setPickedAnimal(pickedAnimal);
             this.visualiser.getStatPanel().setIsAnimalPicked(true);
-            this.visualiser.getStatPanel().setPickedAnimal(pickedAnimal);
+            this.visualiser.getStatPanel().update();
             this.visualiser.getManager().setPraParent(pickedAnimal);
             this.visualiser.getFields().forEach(field -> visualiser.highlightIfContainsPickedAnimal(field));
         }
         else{
-            this.visualiser.getStatPanel().setIsAnimalPicked(false);
+            this.visualiser.getStatPanel().getStats().setPickedAnimal(null);
             this.visualiser.getStatPanel().hideDetailedStats();
             this.setBorder(null);
             this.isAnimalPicked = false;
-            this.visualiser.getStatPanel().setPickedAnimal(null);
         }
     }
     void setIsAnimalPicked(boolean isPicked){

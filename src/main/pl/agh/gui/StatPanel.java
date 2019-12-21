@@ -6,12 +6,13 @@ import pl.agh.utils.MapUtils;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 
 public class StatPanel extends JPanel {
     private boolean isAnimalPicked = false;
     private boolean isDeathDayUpdated = false;
     private MapVisualiser visualiser;
-    private Animal pickedAnimal;
+   // private Animal pickedAnimal;
     private MapStatistics stats;
     private JTextArea currentDay = new JTextArea();
     private JTextArea animalNo = new JTextArea();
@@ -24,10 +25,24 @@ public class StatPanel extends JPanel {
     private JTextArea pickedAnimalChildrenNo = new JTextArea();
     private JTextArea pickedAnimalDescendantNo = new JTextArea();
     private JTextArea pickedAnimalDeathDay = new JTextArea();
+    private ArrayList<JTextArea> container = new ArrayList<>();
     public StatPanel(MapStatistics stats, MapVisualiser visualiser){
         super();
+        container.add(animalNo);
+        container.add(childrenNo);
+        container.add(avgEnergy);
+        container.add(avgLifespan);
+        container.add(grassNo);
+        container.add(dominatingGene);
+        container.add(pickedAnimalDescendantNo);
+        container.add(pickedAnimalChildrenNo);
+        container.add(pickedAnimalDescendantNo);
+        container.add (pickedAnimalGene);
+        container.add(pickedAnimalDeathDay);
+        init();
         this.visualiser = visualiser;
         this.stats = stats;
+        this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         currentDay.setText("epoka: " + visualiser.getManager().getDaysPassed());
         animalNo.setText("ilosc animal: " + stats.getAnimalNo());
         childrenNo.setText("srednia ilosc dzieci: " + stats.getAverageChildrenNo());
@@ -35,32 +50,15 @@ public class StatPanel extends JPanel {
         avgLifespan.setText("sredni wiek" + stats.getAveragelifespan());
         grassNo.setText("ilosc trawy" + stats.getGrassNo());
         dominatingGene.setText("dominujący gen: " + stats.getDominatingGene());
-        animalNo.setEditable(false);
-        childrenNo.setEditable(false);
-        avgEnergy.setEditable(false);
-        avgLifespan.setEditable(false);
-        grassNo.setEditable(false);
-        dominatingGene.setEditable(false);
-        animalNo.setLineWrap(true);
-        childrenNo.setLineWrap(true);
-        avgEnergy.setLineWrap(true);
-        avgLifespan.setLineWrap(true);
-        grassNo.setLineWrap(true);
-        dominatingGene.setLineWrap(true);
-        pickedAnimalGene.setLineWrap(true);
-        this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-        this.add(currentDay);
-        this.add(animalNo);
-        this.add(childrenNo);
-        this.add(avgEnergy);
-        this.add(avgLifespan);
-        this.add(grassNo);
-        this.add(dominatingGene);
-        this.add(pickedAnimalGene);
-        this.add(pickedAnimalChildrenNo);
-        this.add(pickedAnimalDescendantNo);
-        this.add(pickedAnimalDeathDay);
         this.setPreferredSize(new Dimension(500,250));
+    }
+
+    private void init() {
+        container.forEach(item -> {
+            item.setEditable(false);
+            item.setLineWrap(true);
+            this.add(item);
+        });
     }
 
     void update() {
@@ -73,12 +71,12 @@ public class StatPanel extends JPanel {
         dominatingGene.setText("dominujący gen: " + stats.getDominatingGene().getGenes());
         if(isAnimalPicked){
                 showPickedAnimalGene("genom wybranego animala:\n"
-                        + pickedAnimal.getGenotype().getGenes());
+                        + stats.getPickedAnimalGene().getGenes());
                 showPickedAnimalChildrenNo("liczba dzieci wybranego animala: "
-                        + pickedAnimal.getChildrenNo());
+                        + stats.getPickedAnimalChildrenNo());
                 showPickedAnimalDescendantNo("liczba potomków wybranego animala: "
-                        + pickedAnimal.getDescendantNo());
-                if(pickedAnimal.isDead()&&!isDeathDayUpdated){
+                        + stats.getPickedAnimalDescendantNo());
+                if(stats.getPickedAnimal().isDead()&&!isDeathDayUpdated){
                     pickedAnimalDeathDay.setText("epoka, w ktorej zmarl wybrany animal: "
                             + this.visualiser.getManager().getDaysPassed());
                     this.isDeathDayUpdated = true;
@@ -103,16 +101,11 @@ public class StatPanel extends JPanel {
     }
 
     void setIsAnimalPicked(boolean animalPicked) {
+
         isAnimalPicked = animalPicked;
-    }
-    void setPickedAnimal(Animal animal){
-        this.pickedAnimal = animal;
-        this.isDeathDayUpdated = false;
-        this.update();
-        this.pickedAnimalDeathDay.setText("");
-    }
-    Animal getPickedAnimal(){
-        return this.pickedAnimal;
+        if(isAnimalPicked){
+            update();
+        }
     }
     public void hideDetailedStats(){
         pickedAnimalGene.setText("");

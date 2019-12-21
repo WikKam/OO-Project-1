@@ -29,7 +29,7 @@ public class PauseButton extends JButton implements ActionListener {
             this.highlight.clearHighlight();
             this.manager.unpause();
             this.highlight.setEnabled(false);
-            this.setText("Pause");
+            this.setText("Pauza");
         }
         else {
             this.manager.pause();

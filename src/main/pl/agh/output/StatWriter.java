@@ -25,7 +25,7 @@ public class StatWriter {
         out.append("srednia ilosc energii: " + stats.getAverageEnergy()+ "\n");
         out.append("sredni wiek: " + stats.getAveragelifespan()+ "\n");
         out.append("ilosc trawy: " + stats.getGrassNo()+ "\n");
-        out.append("dominujący gen: " + stats.getDominatingGene()+ "\n");
+        out.append("dominujący gen: " + stats.getDominatingGene().getGenes()+ "\n");
         return new String(out);
     }
 }

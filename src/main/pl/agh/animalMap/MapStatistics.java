@@ -12,8 +12,12 @@ public class MapStatistics {
     private int averageEnergy = 0;
     private int averagelifespan = 0;
     private int averageChildrenNo = 0;
+    private Animal pickedAnimal = null;
     private HashMap<String,Integer> statMap = new HashMap<>();
     private Genotype dominatingGene;
+    private Genotype pickedAnimalGene;
+    private int pickedAnimalChildrenNo;
+    private int pickedAnimalDescendantNo;
     public int getAveragelifespan() {
         return averagelifespan;
     }
@@ -24,7 +28,6 @@ public class MapStatistics {
     public int getGrassNo() {
         return grassNo;
     }
-
     public int getAnimalNo() {
         return animalNo;
     }
@@ -40,8 +43,8 @@ public class MapStatistics {
         this.averageEnergy = energySum/map.getAnimals().size();
     }
     private void updateAverageLifeSpan(WorldMap map){
-        if(map.getDeadAnimalNo().intValueExact() == 0)return;
-        BigInteger res = map.getDeadAnimalTotalLifespan().divide(map.getDeadAnimalNo());
+        if(map.getDeadAnimalsNo().intValueExact() == 0)return;
+        BigInteger res = map.getDeadAnimalsTotalLifespan().divide(map.getDeadAnimalsNo());
         int a = res.intValueExact();
         this.averagelifespan = a;
     }
@@ -56,6 +59,9 @@ public class MapStatistics {
         updateAverageLifeSpan(map);
         updateAverageChildrenNo(map);
         updateDominatingGene(map);
+        if(pickedAnimal != null){
+           updateAnimalStats();
+        }
     }
 
     public int getAverageChildrenNo() {
@@ -80,5 +86,40 @@ public class MapStatistics {
         statMap.put("avarageLifespan",this.animalNo);
         statMap.put("averageChildrenNo",this.animalNo);
         return statMap;
+    }
+    public void setPickedAnimal(Animal animal){
+        this.pickedAnimal = animal;
+        if(animal == null)return;
+        updateAnimalStats();
+    }
+
+    private void updateAnimalStats() {
+        updatePickedAnimalChildrenNo();
+        updatePickedAnimalDescendantNo();
+        updatePickedAnimalGene();
+    }
+
+    private void updatePickedAnimalGene(){
+        this.pickedAnimalGene = pickedAnimal.getGenotype();
+    }
+    private void updatePickedAnimalChildrenNo(){
+        this.pickedAnimalChildrenNo = pickedAnimal.getChildrenNo();
+    }
+    private void updatePickedAnimalDescendantNo(){
+        this.pickedAnimalDescendantNo = pickedAnimal.getDescendantNo();
+    }
+    public Genotype getPickedAnimalGene() {
+        return pickedAnimalGene;
+    }
+
+    public int getPickedAnimalChildrenNo() {
+        return pickedAnimalChildrenNo;
+    }
+
+    public int getPickedAnimalDescendantNo() {
+        return pickedAnimalDescendantNo;
+    }
+    public Animal getPickedAnimal(){
+        return this.pickedAnimal;
     }
 }

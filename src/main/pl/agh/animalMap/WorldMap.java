@@ -8,7 +8,6 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.math.BigInteger;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 
@@ -17,11 +16,10 @@ public class WorldMap implements PropertyChangeListener {
     public final Vector2d jungleEnd;
     public final Vector2d steppeStart;
     public final Vector2d steppeEnd;
-    /***************wszystkie pozycje********/
     private ArrayList<Vector2d> positions;
     private ArrayList<Animal> animals = new ArrayList<>();
-    private BigInteger deadAnimalTotalLifespan = new BigInteger("0");
-    private BigInteger deadAnimalNo = new BigInteger("0");
+    private BigInteger deadAnimalsTotalLifespan = new BigInteger("0");
+    private BigInteger deadAnimalsNo = new BigInteger("0");
     public MapStatistics stats = new MapStatistics();
     private int grassNo = 0;
     private HashMap<Vector2d, HashSet<MapElement>> elements = new HashMap<>();
@@ -52,10 +50,8 @@ public class WorldMap implements PropertyChangeListener {
         else if(e.getPropertyName().equals("death")){
             elements.get(oldPos).remove(a);
             Animal animal = (Animal) a;
-
-            //animals.remove(a);
-            this.deadAnimalTotalLifespan =this.deadAnimalTotalLifespan.add(new BigInteger(String.valueOf(animal.getLifespan())));
-            this.deadAnimalNo = this.deadAnimalNo.add(new BigInteger("1"));
+            this.deadAnimalsTotalLifespan =this.deadAnimalsTotalLifespan.add(new BigInteger(String.valueOf(animal.getLifespan())));
+            this.deadAnimalsNo = this.deadAnimalsNo.add(new BigInteger("1"));
         }
     }
     public void place(MapElement element){
@@ -96,10 +92,10 @@ public class WorldMap implements PropertyChangeListener {
     public int getGrassNo(){
         return this.grassNo;
     }
-    public BigInteger getDeadAnimalTotalLifespan(){
-        return this.deadAnimalTotalLifespan;
+    public BigInteger getDeadAnimalsTotalLifespan(){
+        return this.deadAnimalsTotalLifespan;
     }
-    public BigInteger getDeadAnimalNo(){
-        return this.deadAnimalNo;
+    public BigInteger getDeadAnimalsNo(){
+        return this.deadAnimalsNo;
     }
 }
