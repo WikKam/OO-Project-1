@@ -81,6 +81,9 @@ public class StatPanel extends JPanel {
                             + this.visualiser.getManager().getDaysPassed());
                     this.isDeathDayUpdated = true;
                 }
+                if(!stats.getPickedAnimal().isDead()){
+                    pickedAnimalDeathDay.setText("");
+                }
         }
     }
 
