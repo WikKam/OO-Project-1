@@ -48,7 +48,7 @@ public class StatPanel extends JPanel {
         animalNo.setText("ilosc animal: " + stats.getAnimalNo());
         childrenNo.setText("srednia ilosc dzieci: " + stats.getAverageChildrenNo());
         avgEnergy.setText("srednia ilosc energii: " + stats.getAverageEnergy());
-        avgLifespan.setText("sredni wiek" + stats.getAveragelifespan());
+        avgLifespan.setText("sredni wiek zmarłych animali: " + stats.getAveragelifespan());
         grassNo.setText("ilosc trawy" + stats.getGrassNo());
         dominatingGene.setText("dominujący gen: " + stats.getDominatingGene());
         this.setPreferredSize(new Dimension(500,250));
@@ -67,7 +67,7 @@ public class StatPanel extends JPanel {
         animalNo.setText("liczba animali: " + stats.getAnimalNo());
         childrenNo.setText("srednia liczba dzieci: " + stats.getAverageChildrenNo());
         avgEnergy.setText("srednia ilosc energii: " + stats.getAverageEnergy());
-        avgLifespan.setText("sredni wiek: "  + stats.getAveragelifespan());
+        avgLifespan.setText("sredni wiek zmarłych animali: "  + stats.getAveragelifespan());
         grassNo.setText("liczba traw: " + stats.getGrassNo());
         dominatingGene.setText("dominujący gen: " + stats.getDominatingGene().getGenes());
         if(isAnimalPicked){
