@@ -41,6 +41,7 @@ public class SquarePanel extends JButton implements ActionListener {
         }
         else{
             this.visualiser.getStatPanel().getStats().setPickedAnimal(null);
+            this.visualiser.getStatPanel().setIsAnimalPicked(false);
             this.visualiser.getStatPanel().hideDetailedStats();
             this.setBorder(null);
             this.isAnimalPicked = false;
