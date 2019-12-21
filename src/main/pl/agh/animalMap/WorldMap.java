@@ -82,7 +82,6 @@ public class WorldMap implements PropertyChangeListener {
         this.elements.get(pos).remove(a);
         grassNo--;
     }
-    /*********************/
     private void initialisePositions(){
         this.positions = new ArrayList<>();
         for(int i = steppeStart.x; i<=steppeEnd.x;i++){
@@ -91,8 +90,6 @@ public class WorldMap implements PropertyChangeListener {
             }
         }
     }
-    /**********************/
-
     public ArrayList<Vector2d> getPositions() {
         return positions;
     }

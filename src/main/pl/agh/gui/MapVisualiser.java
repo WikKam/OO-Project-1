@@ -36,10 +36,6 @@ public class MapVisualiser {
         frame.add(mapVisualisation,BorderLayout.CENTER);
         frame.add(statPanel,BorderLayout.EAST);
         frame.add(buttonPanel,BorderLayout.SOUTH);
-        //frame.add(new PauseButton(manager,this),BorderLayout.SOUTH);
-        /******/
-        //frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        /******/
     }
 
     private Color getAnimalColor(Vector2d position) {
@@ -71,17 +67,17 @@ public class MapVisualiser {
         else field.setBackground(new Color(103,83,74));
         if(MapUtils.containsAtPos(field.position, Grass.class,map ))field.setBackground(Color.green);
         if(MapUtils.containsAtPos(field.position, Animal.class,map ))field.setBackground(getAnimalColor(field.position));
-        highlightPickedAnimal(field);
+        highlightIfContainsPickedAnimal(field);
     }
-    public ArrayList<SquarePanel> getFields(){
+    ArrayList<SquarePanel> getFields(){
         return this.fields;
     }
 
-    public void disableFields() {
+    void disableFields() {
         fields.forEach(field -> field.setEnabled(false));
     }
 
-    public void activateFields() {
+    void activateFields() {
         fields.forEach(field -> {
             if(MapUtils.containsAtPos(field.position,Animal.class,map ))field.setEnabled(true);
         });
@@ -89,37 +85,31 @@ public class MapVisualiser {
     public WorldMap getMap(){
         return this.map;
     }
-    public StatPanel getStatPanel(){
+    StatPanel getStatPanel(){
         return  this.statPanel;
     }
-    public void highlightAnimalsWithDominatingGene(){
+    void highlightAnimalsWithDominatingGene(){
         fields.forEach(field -> {
             Animal current = MapUtils.getFirstAnimalFromPos(field.position,map);
             if(current != null&&current.getGenotype().equals(statPanel.getStats().getDominatingGene()))field.setBorder(BorderFactory.createLineBorder(Color.yellow, 3));//field.setBackground(Color.yellow);
         });
     }
-    public void clearHighlight(){
-        fields.forEach(field -> field.setBorder(null));
-    }
-    public JFrame getFrame(){
-        return this.frame;
-    }
-    public JPanel getButtonPanel(){
+    JPanel getButtonPanel(){
         return this.buttonPanel;
     }
-    public TimeManager getManager(){
+    TimeManager getManager(){
         return this.manager;
     }
-    public void highlightPickedAnimal(SquarePanel field){
+    void highlightIfContainsPickedAnimal(SquarePanel field){
         Animal picked = statPanel.getPickedAnimal();
-        if(picked == null)return;
-       if(field.position.equals(picked.getPosition())){
+        if(picked == null || !field.position.equals(picked.getPosition())){
+            field.setIsAnimalPicked(false);
+            field.setBorder(null);
+        }
+       else if(field.position.equals(picked.getPosition())){
            field.setIsAnimalPicked(true);
-           field.setBorder(BorderFactory.createLineBorder(Color.white,3));
+           field.setBorder(BorderFactory.createLineBorder(Color.blue,3));
        }
-       else {
-           field.setIsAnimalPicked(false);
-           field.setBorder(null);
-       }
+
     }
 }

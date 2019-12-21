@@ -11,7 +11,7 @@ public class HighlightAnimalsButton extends JButton implements ActionListener {
     private TimeManager manager;
     private MapVisualiser visualiser;
     private boolean areAnimalsHighlighted = false;
-    public HighlightAnimalsButton(TimeManager manager, MapVisualiser visualiser){
+    HighlightAnimalsButton(TimeManager manager, MapVisualiser visualiser){
         this.manager = manager;
         this.visualiser = visualiser;
         this.setText("Zaznacz animale z dominującym genem");
@@ -27,11 +27,11 @@ public class HighlightAnimalsButton extends JButton implements ActionListener {
             this.clearHighlight();
         }
     }
-    public void clearHighlight(){
-        this.visualiser.clearHighlight();
+    void clearHighlight(){
+        this.visualiser.getFields().forEach(field -> this.visualiser.highlightIfContainsPickedAnimal(field));
         areAnimalsHighlighted = false;
     }
-    public void highlightAnimalsWithDominatingGene(){
+    private void highlightAnimalsWithDominatingGene(){
         this.visualiser.highlightAnimalsWithDominatingGene();
         areAnimalsHighlighted = true;
     }

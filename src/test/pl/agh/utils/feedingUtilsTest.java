@@ -25,7 +25,7 @@ public class feedingUtilsTest {
         map.place(animal1);
         map.place(animal2);
         map.place(animal3);
-        Main.initConstants(100,5,20, 50);
+        initConstants(100,5,20, 50);
     }
     @Test
     public void removeGrassTest(){
@@ -54,5 +54,10 @@ public class feedingUtilsTest {
         map.place(g);
         Assert.assertTrue(FeedingUtils.canAnimalsFeed(animal1.getPosition(),map));
     }
-
+    public static void initConstants(int startEnergy,int moveCost, int energyGainedFromGrass, int minBreedEnergy){
+        MovementUtils.startEnergy = startEnergy;
+        MovementUtils.moveCost = moveCost;
+        FeedingUtils.energyGainedFromGrass = energyGainedFromGrass;
+        BreedUtils.minBreedEnergy = minBreedEnergy;
+    }
 }

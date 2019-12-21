@@ -23,6 +23,7 @@ public class Animal implements MapElement {
     private PropertyChangeSupport support;
     private int lifespan=0;
     private int childrenNo = 0;
+    private int descendantNo = 0;
     private Animal praParent = null;
     public void addPropertyChangeListener(PropertyChangeListener ls){
         support.addPropertyChangeListener(ls);
@@ -38,7 +39,6 @@ public class Animal implements MapElement {
         this.direction = direction;
         this.genotype = new Genotype();
         this.currentEnergy = startEnergy;
-        //this.map.place(this);
     }
     public Animal(Animal parent1, Animal parent2){
         this.map = parent1.map;
@@ -50,13 +50,20 @@ public class Animal implements MapElement {
         this.genotype = new Genotype(parent1, parent2);
         parent1.addChild();
         parent2.addChild();
-       // this.map.place(this);
+        parent1.addDescendant();
+        parent2.addDescendant();
+        if(parent1.getPraParent() != null){
+            parent1.getPraParent().addDescendant();
+        }
+        if(parent2.getPraParent() != null){
+            parent2.getPraParent().addDescendant();
+        }
     }
     public Animal(Animal parent1, Animal parent2, Animal praParent){
         this(parent1,parent2);
         this.praParent = praParent;
     }
-    public void move(int deg){
+    void move(int deg){
         deg = deg >0?deg : 360 + deg;
         this.direction = this.direction.rotateRight(deg);
         Vector2d newPos = position.add(this.direction.toUnitVector());
@@ -93,11 +100,9 @@ public class Animal implements MapElement {
         Animal a2 = (Animal)o;
         return this.getCurrentEnergy() - a2.getCurrentEnergy();
     }
-    /*****zmienic to**///
     public boolean isDead(){
         return this.currentEnergy <= 0;
     }
-    ///***///
     public void die(){
         PropertyChangeEvent ret = new PropertyChangeEvent(this,"death",this.position,null);
         this.support.firePropertyChange(ret);
@@ -115,14 +120,25 @@ public class Animal implements MapElement {
     public int getChildrenNo(){
         return this.childrenNo;
     }
-    public void addChild(){
+    private void addChild(){
         this.childrenNo++;
     }
-    public Animal getPraParent(){
+    private Animal getPraParent(){
         return this.praParent;
     }
 
     public void setChildrenNo(int i) {
         this.childrenNo = i;
+    }
+
+    public int getDescendantNo() {
+        return descendantNo;
+    }
+    public void addDescendant(){
+        this.descendantNo++;
+    }
+
+    public void setDescendantNo(int descendantNo) {
+        this.descendantNo = descendantNo;
     }
 }

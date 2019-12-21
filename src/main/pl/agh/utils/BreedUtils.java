@@ -30,7 +30,6 @@ public class BreedUtils {
         throw new IllegalArgumentException("pozycja jest pusta!");
     }
     public static boolean isBreedingPossible(Vector2d key,WorldMap map){
-        //sprawdzanie energii animalów
         HashSet elements = map.getElements().get(key);
         if(elements == null) return false;
         if(elements.size()<=1)return false;

@@ -29,23 +29,23 @@ public class MapStatistics {
         return animalNo;
     }
 
-    public void updateAnimalNo(WorldMap map){
+    private void updateAnimalNo(WorldMap map){
         this.animalNo = map.getAnimals().size();
     }
-    public void updateGrassNo(WorldMap map){
+    private void updateGrassNo(WorldMap map){
         this.grassNo = map.getGrassNo();
     }
-    public void updateAverageEnergy(WorldMap map){
+    private void updateAverageEnergy(WorldMap map){
         int energySum = map.getAnimals().stream().mapToInt(Animal::getCurrentEnergy).sum();
         this.averageEnergy = energySum/map.getAnimals().size();
     }
-    public void updateAverageLifeSpan(WorldMap map){
+    private void updateAverageLifeSpan(WorldMap map){
         if(map.getDeadAnimalNo().intValueExact() == 0)return;
         BigInteger res = map.getDeadAnimalTotalLifespan().divide(map.getDeadAnimalNo());
         int a = res.intValueExact();
         this.averagelifespan = a;
     }
-    public void updateAverageChildrenNo(WorldMap map){
+    private void updateAverageChildrenNo(WorldMap map){
         int childAmount = map.getAnimals().stream().mapToInt(Animal::getChildrenNo).sum();
         this.averageChildrenNo = childAmount / map.getAnimals().size();
     }
@@ -64,7 +64,7 @@ public class MapStatistics {
     public Genotype getDominatingGene(){
         return this.dominatingGene;
     }
-    public void updateDominatingGene(WorldMap map){
+    private void updateDominatingGene(WorldMap map){
         HashMap<Genotype,Integer> genesMap = new HashMap<>();
         ArrayList<Animal> animals = map.getAnimals();
         animals.forEach(animal -> genesMap.put(animal.getGenotype(),0));

@@ -49,8 +49,6 @@ public class TimeManager extends Thread {
                 int gain = FeedingUtils.energyGainedFromGrass/feeding.size();
                 feeding.forEach(animal -> animal.gainEnergy(gain));
                 map.removeGrass(key);
-                //set.remove(new Grass(key,map));
-
             }
         });
     }
@@ -103,7 +101,7 @@ public class TimeManager extends Thread {
         growingPhase();
         map.stats.updateAll(map);
         visualiser.update();
-        Thread.sleep(50);
+        Thread.sleep(100);
     }
     public int getDaysPassed(){
         return this.daysPassed;

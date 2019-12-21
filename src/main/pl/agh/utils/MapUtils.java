@@ -24,12 +24,4 @@ public class MapUtils {
         return false;
     }
 
-    public static int getDescendantNo(Animal picked, WorldMap map) {
-        return   map
-                .getAnimals()
-                .stream()
-                .filter(animal -> picked.equals(animal.getPraParent()))
-                .mapToInt(animal -> 1)
-                .sum();
-    }
 }

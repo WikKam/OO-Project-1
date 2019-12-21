@@ -13,6 +13,7 @@ public class StatPanel extends JPanel {
     private MapVisualiser visualiser;
     private Animal pickedAnimal;
     private MapStatistics stats;
+    private JTextArea currentDay = new JTextArea();
     private JTextArea animalNo = new JTextArea();
     private JTextArea childrenNo = new JTextArea();
     private JTextArea avgEnergy = new JTextArea();
@@ -27,6 +28,7 @@ public class StatPanel extends JPanel {
         super();
         this.visualiser = visualiser;
         this.stats = stats;
+        currentDay.setText("epoka: " + visualiser.getManager().getDaysPassed());
         animalNo.setText("ilosc animal: " + stats.getAnimalNo());
         childrenNo.setText("srednia ilosc dzieci: " + stats.getAverageChildrenNo());
         avgEnergy.setText("srednia ilosc energii: " + stats.getAverageEnergy());
@@ -47,6 +49,7 @@ public class StatPanel extends JPanel {
         dominatingGene.setLineWrap(true);
         pickedAnimalGene.setLineWrap(true);
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+        this.add(currentDay);
         this.add(animalNo);
         this.add(childrenNo);
         this.add(avgEnergy);
@@ -60,20 +63,21 @@ public class StatPanel extends JPanel {
         this.setPreferredSize(new Dimension(500,250));
     }
 
-    public void update() {
-        animalNo.setText("ilosc animal: " + stats.getAnimalNo());
-        childrenNo.setText("srednia ilosc dzieci: " + stats.getAverageChildrenNo());
+    void update() {
+        currentDay.setText("epoka: " + visualiser.getManager().getDaysPassed());
+        animalNo.setText("liczba animali: " + stats.getAnimalNo());
+        childrenNo.setText("srednia liczba dzieci: " + stats.getAverageChildrenNo());
         avgEnergy.setText("srednia ilosc energii: " + stats.getAverageEnergy());
-        avgLifespan.setText("sredni wiek" + stats.getAveragelifespan());
-        grassNo.setText("ilosc trawy" + stats.getGrassNo());
+        avgLifespan.setText("sredni wiek: "  + stats.getAveragelifespan());
+        grassNo.setText("liczba traw: " + stats.getGrassNo());
         dominatingGene.setText("dominujący gen: " + stats.getDominatingGene().getGenes());
         if(isAnimalPicked){
                 showPickedAnimalGene("genom wybranego animala:\n"
                         + pickedAnimal.getGenotype().getGenes());
-                showPickedAnimalChildrenNo("dzieci wybranego animala: "
+                showPickedAnimalChildrenNo("liczba dzieci wybranego animala: "
                         + pickedAnimal.getChildrenNo());
-                showPickedAnimalDescendantNo("potomkowie wybranego animala: "
-                        + MapUtils.getDescendantNo(pickedAnimal,visualiser.getMap()));
+                showPickedAnimalDescendantNo("liczba potomków wybranego animala: "
+                        + pickedAnimal.getDescendantNo());
                 if(pickedAnimal.isDead()&&!isDeathDayUpdated){
                     pickedAnimalDeathDay.setText("epoka, w ktorej zmarl wybrany animal: "
                             + this.visualiser.getManager().getDaysPassed());
@@ -82,32 +86,38 @@ public class StatPanel extends JPanel {
         }
     }
 
-    public void showPickedAnimalGene(String text) {
+    private void showPickedAnimalGene(String text) {
         this.pickedAnimalGene.setText(text);
     }
 
-    public MapStatistics getStats() {
+    MapStatistics getStats() {
         return stats;
     }
 
-    public void showPickedAnimalDescendantNo(String text) {
+    private void showPickedAnimalDescendantNo(String text) {
         this.pickedAnimalDescendantNo.setText(text);
     }
 
-    public void showPickedAnimalChildrenNo(String text) {
+    private void showPickedAnimalChildrenNo(String text) {
         this.pickedAnimalChildrenNo.setText(text);
     }
 
-    public void setIsAnimalPicked(boolean animalPicked) {
+    void setIsAnimalPicked(boolean animalPicked) {
         isAnimalPicked = animalPicked;
     }
-    public void setPickedAnimal(Animal animal){
+    void setPickedAnimal(Animal animal){
         this.pickedAnimal = animal;
         this.isDeathDayUpdated = false;
         this.update();
         this.pickedAnimalDeathDay.setText("");
     }
-    public Animal getPickedAnimal(){
+    Animal getPickedAnimal(){
         return this.pickedAnimal;
+    }
+    public void hideDetailedStats(){
+        pickedAnimalGene.setText("");
+        pickedAnimalDeathDay.setText("");
+        pickedAnimalChildrenNo.setText("");
+        pickedAnimalDescendantNo.setText("");
     }
 }

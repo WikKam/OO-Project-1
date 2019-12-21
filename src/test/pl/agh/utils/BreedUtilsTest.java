@@ -26,11 +26,11 @@ public class BreedUtilsTest {
         map.place(animal1);
         map.place(animal2);
         map.place(animal3);
-        Main.initConstants(100,5,20, 50);
+        initConstants(100,5,20, 50);
     }
     @Test
     public void isBreedingPossibleTest(){
-        Main.initConstants(100,5,20, 50);
+        initConstants(100,5,20, 50);
         map.getElements().get(new Vector2d(9,9)).forEach(System.out::println);
        // Assert.assertTrue(BreedUtils.isBreedingPossible(new Vector2d(9,9),map));
         Assert.assertFalse(BreedUtils.isBreedingPossible(new Vector2d(1,1),map));
@@ -54,6 +54,12 @@ public class BreedUtilsTest {
         Assert.assertTrue(breedPair.indexOf(animal3) == 0);
         Assert.assertTrue(breedPair.indexOf(animal2) == 1);
         Assert.assertFalse(breedPair.contains(animal1));
+    }
+    public static void initConstants(int startEnergy,int moveCost, int energyGainedFromGrass, int minBreedEnergy){
+        MovementUtils.startEnergy = startEnergy;
+        MovementUtils.moveCost = moveCost;
+        FeedingUtils.energyGainedFromGrass = energyGainedFromGrass;
+        BreedUtils.minBreedEnergy = minBreedEnergy;
     }
 
 }

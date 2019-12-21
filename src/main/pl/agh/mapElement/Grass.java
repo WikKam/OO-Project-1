@@ -14,7 +14,6 @@ public class Grass implements MapElement {
     public Grass(Vector2d position, WorldMap m){
         this.position = position;
         this.map = m;
-       // m.place(this);
     }
     public Grass(int x, int y, WorldMap m){
         this(new Vector2d(x,y),m);
