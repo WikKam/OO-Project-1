@@ -107,6 +107,7 @@ public class StatPanel extends JPanel {
     void setIsAnimalPicked(boolean animalPicked) {
 
         isAnimalPicked = animalPicked;
+        isDeathDayUpdated = false;
         if(isAnimalPicked){
             update();
         }
